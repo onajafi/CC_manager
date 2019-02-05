@@ -1,3 +1,5 @@
+
+
 class Card:
 	def __init__(self, name, bill_period, bill_relative_deadline, minimum_paying_first, maximum_credit, penalty_percent, bill_relative_hard_deadline):
 		self.name = name
