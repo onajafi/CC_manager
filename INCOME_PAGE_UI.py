@@ -2,8 +2,6 @@ from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
 
 from pyqtgraph.Qt import QtGui, QtCore
 
-app = QtGui.QApplication([])
-
 
 class INCOME_PAGE_UI(QtGui.QMainWindow):
     def __init__(self):

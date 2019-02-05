@@ -19,8 +19,13 @@ class CreditInfoWidget(QWidget):
 
         self.hLayout = QHBoxLayout()
         self.hLayout.addWidget(self.plot_widget)
-        self.hLayout.addWidget(QPushButton("OK"))
-        # self.main_layout = QVBoxLayout()
+        self.EDIT_BTN = QPushButton("Edit")
+        self.DELETE_BTN = QPushButton("Delete")
+        btn_Layout = QVBoxLayout()
+        btn_Layout.addWidget(self.EDIT_BTN)
+        btn_Layout.addWidget(self.DELETE_BTN)
+        self.hLayout.addLayout(btn_Layout)
+
         self.setLayout(self.hLayout)
         self.plot_widget.sigRangeChanged.connect(self.axis_changed)
 
