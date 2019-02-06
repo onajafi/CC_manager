@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
 
 from pyqtgraph.Qt import QtGui, QtCore
 
+from scheduling import Scheduling
 
 class INCOME_PAGE_UI(QtGui.QMainWindow):
     def __init__(self):
@@ -16,6 +17,8 @@ class INCOME_PAGE_UI(QtGui.QMainWindow):
         self.MainWid.setLayout(self.main_layout)
 
         self.add_fields()
+        self.OKBTN.clicked.connect(self.OK_clicked)
+
 
     def add_fields(self):
         self.firstF_layout = QtGui.QHBoxLayout()
@@ -42,7 +45,21 @@ class INCOME_PAGE_UI(QtGui.QMainWindow):
         self.main_layout.addStretch()
 
     def OK_clicked(self):
-        QtGui.QMainWindow.close(self)
+        if(self.FirstTXTBox.text() == '' or
+           self.SecondTXTBox.text() == '' or
+           self.ThirdTXTBox.text() == ''):
+            return
+
+        self.close()
+        self.main_page.show()
+        # Making the Schedule OBJ
+        self.main_page.main_schedule = Scheduling(int(self.FirstTXTBox.text()),
+                                                  int(self.SecondTXTBox.text()),
+                                                  int(self.ThirdTXTBox.text()))
+
+
+    def initPages(self,MainPage):
+        self.main_page = MainPage
 
 
 
