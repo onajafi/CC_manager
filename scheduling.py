@@ -1,12 +1,14 @@
 from card import *
 import random
 
+
 class Event:
 	def __init__(self, time, event_type, bill):
 		self.time = time
 		self.event_type = event_type
 		self.bill = bill
 		# bill field is a card for release events and None for income events.
+
 
 class Scheduling:
 	def __init__(self, income_period, minimum_income, maximum_income):
@@ -17,22 +19,39 @@ class Scheduling:
 		self.time = 0
 		self.money = 0
 		self.alert = False
+
 	def update_time(self, new_time):
 		self.time = new_time
+
 	def add_event(self, event):
 		self.events.append(event)
+
 	def add_bill_event(self, bill):
 		self.add_event(Event(bill.deadline, "2-deadline", bill))
 		self.add_event(Event(bill.hard_deadline, "1-hard", bill))
+
 	def get_money_from_a_friend(self, amount):
 		self.money += amount
 		self.alert = False
+
 	def time_of_next_income(self):
 		for event in self.events:
 			if "income" in event.event_type:
 				return event.time
 		else:
 			raise Exception("no income event found in events list!")
+
+	def delete_card(self, card):
+		for event in self.events[:]:
+			if "income" in event.event_type:
+				continue
+			elif "release" in event.event_type:
+				if event.bill is card:
+					self.events.remove(event)
+			else:
+				if event.bill.card is card:
+					self.events.remove(event)
+			
 	def schedule(self):
 		while True:
 			self.events.sort(key=lambda x : (x.time, x.event_type))
