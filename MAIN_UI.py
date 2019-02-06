@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
 from pyqtgraph.Qt import QtGui, QtCore
 
 import CreditInfoWidget
+from scheduling import Scheduling
 
 
 class MAIN_UI(QtGui.QMainWindow):
@@ -23,9 +24,20 @@ class MAIN_UI(QtGui.QMainWindow):
 
         self.MainWid.setLayout(self.main_main_layout)
 
-        self.MAIN_add_fields()
+        self.main_schedule = Scheduling(None,None,None)
+        self.card_list = []# elem: [card_OBJ, plot_OBJ]
 
+        self.MAIN_add_fields()
         self.SUB_add_field()
+
+        self.INCOME_EDIT_BTN.clicked.connect(self.EDIT_INCOME_BTN_Event)
+        self.timeFWD.clicked.connect(self.time_forward_Event)
+        self.ADD_CARD_BTN.clicked.connect(self.add_card_event)
+
+
+
+
+
 
     def MAIN_add_fields(self):
         self.time_layout = QtGui.QHBoxLayout()
@@ -43,11 +55,15 @@ class MAIN_UI(QtGui.QMainWindow):
 
         self.main_layout.addLayout(self.time_layout)
 
-        self.first_plot = CreditInfoWidget.CreditInfoWidget("HI",True)
-        self.main_layout.addWidget(self.first_plot)
+        # self.first_plot = CreditInfoWidget.CreditInfoWidget("HI",True)
+        # self.main_layout.addWidget(self.first_plot)
 
-        self.second_plot = CreditInfoWidget.CreditInfoWidget("HI again")
-        self.main_layout.addWidget(self.second_plot)
+        self.income_plot = CreditInfoWidget.CreditInfoWidget("Income", True)
+        self.main_layout.addWidget(self.income_plot)
+        self.income_plot.GIVE_MONEY_BTN.clicked.connect(self.give_money_Event)
+
+        # self.second_plot = CreditInfoWidget.CreditInfoWidget("HI again")
+        # self.main_layout.addWidget(self.second_plot)
 
         self.main_layout.addStretch()
 
@@ -55,8 +71,8 @@ class MAIN_UI(QtGui.QMainWindow):
         self.INCOME_EDIT_BTN = QPushButton("Edit Income")
         self.sub_layout.addWidget(self.INCOME_EDIT_BTN)
 
-        self.GIVE_MONEY_BTN = QPushButton("Give Money")
-        self.sub_layout.addWidget(self.GIVE_MONEY_BTN)
+        # self.GIVE_MONEY_BTN = QPushButton("Give Money")
+        # self.sub_layout.addWidget(self.GIVE_MONEY_BTN)
 
         self.ADD_CARD_BTN = QPushButton("Add Card")
         self.sub_layout.addWidget(self.ADD_CARD_BTN)
@@ -75,10 +91,42 @@ class MAIN_UI(QtGui.QMainWindow):
                                     "color:#000000;"
                                     "qproperty-alignment: AlignCenter }")
 
+    def initPages(self,income_page, add_credit_page):
+        self.income_page = income_page
+        self.add_credit_page = add_credit_page
+
+    def EDIT_INCOME_BTN_Event(self):
+        self.income_page.show(self.main_schedule.income_period,
+                              self.main_schedule.minimum_income,
+                              self.main_schedule.maximum_income)
+        self.close()
+
+    def give_money_Event(self):
+        if(self.income_plot.income_amount.text()):
+            self.main_schedule.get_money_from_a_friend(
+                int(self.income_plot.income_amount.text()))
+            self.income_plot.income_amount.setText('')
+
+    def show(self):
+        self.disp_time.setText(str(self.main_schedule.time))
+        QtGui.QMainWindow.show(self)
 
 
+    def time_forward_Event(self):
+        if len(self.main_schedule.events) > 0:
+            self.main_schedule.update_time(self.main_schedule.events[0].time)
+            self.main_schedule.schedule()
+            self.disp_time.setText(str(self.main_schedule.time))
 
+    def add_card_event(self):
+        self.close()
+        self.add_credit_page.show()
 
+    def add_new_card(self,_card):
+        tmp_plot = CreditInfoWidget.CreditInfoWidget(title=_card.name)
+        tmp_plot.EDIT_BTN.clicked.connect()#TODO try to implement from here
+        self.main_layout.insertWidget(2,tmp_plot)
+        self.card_list.append([tmp_plot,_card])
 
 
 

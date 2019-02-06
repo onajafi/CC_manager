@@ -14,6 +14,14 @@ dashboard_page = MAIN_UI.MAIN_UI()
 income_page = INCOME_PAGE_UI.INCOME_PAGE_UI()
 income_page.initPages(dashboard_page)
 
+add_credit_page = ADD_CARD.ADD_CARD_UI()
+add_credit_page.init_page(dashboard_page)
+
+dashboard_page.initPages(income_page,add_credit_page)
+
+
+
+
 income_page.show()
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pyqtgraph
-from PyQt5.QtWidgets import QPushButton, QScrollArea, QWidget, QVBoxLayout,QHBoxLayout
+from PyQt5.QtWidgets import QPushButton, QScrollArea, QWidget, QVBoxLayout,QHBoxLayout, QLineEdit
 from PyQt5 import QtCore
 
 CreditInfoWidgetOBJ_LIST = []
@@ -20,11 +20,7 @@ class CreditInfoWidget(QWidget):
         self.hLayout = QHBoxLayout()
         self.plot_widget.setMouseEnabled(x=True, y=False)
         self.hLayout.addWidget(self.plot_widget)
-        self.EDIT_BTN = QPushButton("Edit")
-        self.DELETE_BTN = QPushButton("Delete")
         btn_Layout = QVBoxLayout()
-        btn_Layout.addWidget(self.EDIT_BTN)
-        btn_Layout.addWidget(self.DELETE_BTN)
         self.hLayout.addLayout(btn_Layout)
 
         self.setLayout(self.hLayout)
@@ -33,7 +29,16 @@ class CreditInfoWidget(QWidget):
         self.arrow_list = []
         if isIncome:
             self.draw_income(range(0,10))
+            self.GIVE_MONEY_BTN = QPushButton("Give Money")
+            self.income_amount = QLineEdit('')
+            btn_Layout.addWidget(self.GIVE_MONEY_BTN)
+            btn_Layout.addWidget(self.income_amount)
+            btn_Layout.addStretch()
         else:
+            self.EDIT_BTN = QPushButton("Edit")
+            self.DELETE_BTN = QPushButton("Delete")
+            btn_Layout.addWidget(self.EDIT_BTN)
+            btn_Layout.addWidget(self.DELETE_BTN)
             self.add_REL_time(2)
             self.add_SOFT_deadline(5)
             self.add_HARD_deadline(6)
