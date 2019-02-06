@@ -36,8 +36,10 @@ class CreditInfoWidget(QWidget):
             btn_Layout.addStretch()
         else:
             self.EDIT_BTN = QPushButton("Edit")
+            # self.EDIT_BTN.clicked.connect(self.edit_card_info_event)
+            # btn_Layout.addWidget(self.EDIT_BTN)
             self.DELETE_BTN = QPushButton("Delete")
-            btn_Layout.addWidget(self.EDIT_BTN)
+            self.DELETE_BTN.clicked.connect(self.delete_plot_event)
             btn_Layout.addWidget(self.DELETE_BTN)
             self.add_REL_time(2)
             self.add_SOFT_deadline(5)
@@ -103,3 +105,11 @@ class CreditInfoWidget(QWidget):
     def draw_income(self,list):
         self.plot_widget.plot(list, fillLevel=-0.3, brush=(50,200,50,100),pen=(100,255,100,200))
 
+    def init_main_page(self,_main_page):
+        self.main_page = _main_page
+
+    def delete_plot_event(self):
+        self.main_page.request_delete(self)
+
+    # def edit_card_info_event(self):
+    #     self.main_page.request_card_edit(self)

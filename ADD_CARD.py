@@ -79,7 +79,12 @@ class ADD_CARD_UI(QtGui.QMainWindow):
             float(self.PP_TXTBox.text()),
             float(self.HARD_D_TXTBox.text())
         )
+
+        # if self.editing_card: # EDIT
+        #     self.main_page.edit_card(self.editing_card)
+        # else: # ADD
         self.main_page.add_new_card(tmp_card)
+
         self.main_page.show()
         self.close()
 
@@ -96,16 +101,18 @@ class ADD_CARD_UI(QtGui.QMainWindow):
         self.close()
 
     def show(self,edit_card = None):
-        if(edit_card):#EDIT
-            self.name_TXTBox.setText(edit_card.name)
-            self.Bill_P_TXTBox.setText(edit_card.bill_period)
-            self.bill_rel_dead_TXTBox.setText(edit_card.bill_relative_deadline)
-            self.Min_P_TXTBox.setText(edit_card.minimum_paying_first)
-            self.max_TXTBox.setText(edit_card.maximum_credit)
-            self.PP_TXTBox.setText(edit_card.penalty_percent)
-            self.HARD_D_TXTBox.setText(edit_card.bill_relative_hard_deadline)
-            self.is_editing = True
-        else:
-            self.is_editing = False
+
+
+        # self.name_TXTBox.setText(edit_card.name)
+        # self.Bill_P_TXTBox.setText(edit_card.bill_period)
+        # self.bill_rel_dead_TXTBox.setText(edit_card.bill_relative_deadline)
+        # self.Min_P_TXTBox.setText(edit_card.minimum_paying_first)
+        # self.max_TXTBox.setText(edit_card.maximum_credit)
+        # self.PP_TXTBox.setText(edit_card.penalty_percent)
+        # self.HARD_D_TXTBox.setText(edit_card.bill_relative_hard_deadline)
+        #
+        # self.editing_card = edit_card
 
         QtGui.QMainWindow.show(self)
+
+

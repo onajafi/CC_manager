@@ -35,10 +35,6 @@ class MAIN_UI(QtGui.QMainWindow):
         self.ADD_CARD_BTN.clicked.connect(self.add_card_event)
 
 
-
-
-
-
     def MAIN_add_fields(self):
         self.time_layout = QtGui.QHBoxLayout()
         self.time_layout.addWidget(QLabel("Show Time:"))
@@ -124,12 +120,26 @@ class MAIN_UI(QtGui.QMainWindow):
 
     def add_new_card(self,_card):
         tmp_plot = CreditInfoWidget.CreditInfoWidget(title=_card.name)
-        tmp_plot.EDIT_BTN.clicked.connect()#TODO try to implement from here
+        tmp_plot.init_main_page(self)
+        tmp_plot._card_OBJ = _card
         self.main_layout.insertWidget(2,tmp_plot)
-        self.card_list.append([tmp_plot,_card])
+        self.card_list.append(tmp_plot)
 
+    # def edit_card(self,_card):
+    #     for idx,elem in enumerate(self.card_list):
+    #         if elem[1] is _card:
+    #             self.card_list[idx][0].
 
+    # def request_card_edit(self,card_plot_widget):# Show the ADD_CARD page
+    #     for elem in self.card_list:
+    #         if elem[0] is card_plot_widget:
+    #             self.add_credit_page.show(edit_card = elem[1])
+    #             self.close()
 
+    def request_delete(self,plot_widg):
+        # TODO Call zavosh's delete function here
+        plot_widg.hide()
+        self.card_list.remove(plot_widg)
 
 
 
