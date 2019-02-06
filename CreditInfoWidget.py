@@ -9,7 +9,7 @@ CreditInfoWidgetOBJ_LIST = []
 class CreditInfoWidget(QWidget):
     reScaling = False
 
-    def __init__(self,title = None):
+    def __init__(self,title = None,isIncome = False):
         QWidget.__init__(self)
         CreditInfoWidgetOBJ_LIST.append(self)
 
@@ -31,9 +31,12 @@ class CreditInfoWidget(QWidget):
         self.plot_widget.sigRangeChanged.connect(self.axis_changed)
 
         self.arrow_list = []
-        self.add_REL_time(2)
-        self.add_SOFT_deadline(5)
-        self.add_HARD_deadline(6)
+        if isIncome:
+            self.draw_income(range(0,10))
+        else:
+            self.add_REL_time(2)
+            self.add_SOFT_deadline(5)
+            self.add_HARD_deadline(6)
 
 
 
@@ -92,5 +95,6 @@ class CreditInfoWidget(QWidget):
         self.arrow_list.append(arrow)
         self.plot_widget.setRange(yRange=(0,100))
 
-
+    def draw_income(self,list):
+        self.plot_widget.plot(list, fillLevel=-0.3, brush=(50,200,50,100),pen=(100,255,100,200))
 

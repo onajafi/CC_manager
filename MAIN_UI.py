@@ -43,7 +43,7 @@ class MAIN_UI(QtGui.QMainWindow):
 
         self.main_layout.addLayout(self.time_layout)
 
-        self.first_plot = CreditInfoWidget.CreditInfoWidget("HI")
+        self.first_plot = CreditInfoWidget.CreditInfoWidget("HI",True)
         self.main_layout.addWidget(self.first_plot)
 
         self.second_plot = CreditInfoWidget.CreditInfoWidget("HI again")
