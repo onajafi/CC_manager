@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
 
 from CreditInfoWidget import CreditInfoWidget
 from pyqtgraph.Qt import QtGui, QtCore
-import INCOME_PAGE_UI,MAIN_UI
+import INCOME_PAGE_UI,MAIN_UI,ADD_CARD
 
 app = QtGui.QApplication([])
 
@@ -15,8 +15,10 @@ first_page = INCOME_PAGE_UI.INCOME_PAGE_UI()
 # first_page.show()
 
 second_page = MAIN_UI.MAIN_UI()
-second_page.show()
+# second_page.show()
 
+third_page = ADD_CARD.ADD_CARD_UI()
+third_page.show()
 
 
 
