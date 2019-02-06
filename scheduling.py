@@ -53,7 +53,7 @@ class Scheduling:
 					self.events.remove(event)
 			
 	def schedule(self):
-		while True:
+		while len(self.events) > 0:
 			self.events.sort(key=lambda x : (x.time, x.event_type))
 			event = self.events.pop(0)
 			if event.time != self.time:
