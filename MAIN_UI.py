@@ -139,13 +139,12 @@ class MAIN_UI(QtGui.QMainWindow):
 
         self.main_schedule.schedule()
         for _bill in _card.bills:
-            tmp_plot.add_REL_time(_bill.release_time)
-            tmp_plot.add_SOFT_deadline(_bill.deadline)
-            tmp_plot.add_HARD_deadline(_bill.hard_deadline)
+            tmp_plot.add_REL_time(_bill.release_time,_bill.debt)
+            tmp_plot.add_SOFT_deadline(_bill.deadline,_bill.debt)
+            tmp_plot.add_HARD_deadline(_bill.hard_deadline,_bill.debt)
 
 
     def request_delete(self,plot_widg):
-        # TODO Call zavosh's delete function here
         self.main_schedule.delete_card(plot_widg._card_OBJ)
         plot_widg.hide()
         self.card_list.remove(plot_widg)
@@ -163,13 +162,17 @@ class MAIN_UI(QtGui.QMainWindow):
 
             self.time += 1
             self.main_schedule.update_time(self.time)
+
             self.main_schedule.schedule()
+            self.setAlertLightStat(not self.main_schedule.alert)
 
             for _card_plot in self.card_list:
                 for _bill in _card_plot._card_OBJ.bills:
-                    _card_plot.add_REL_time(_bill.release_time)
-                    _card_plot.add_SOFT_deadline(_bill.deadline)
-                    _card_plot.add_HARD_deadline(_bill.hard_deadline)
+                    _card_plot.add_REL_time(_bill.release_time,_bill.debt)
+                    _card_plot.add_SOFT_deadline(_bill.deadline,_bill.debt)
+                    _card_plot.add_HARD_deadline(_bill.hard_deadline,_bill.debt)
+
+
 
 
 

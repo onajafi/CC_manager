@@ -40,6 +40,8 @@ class CreditInfoWidget(QWidget):
             self.plot_Xpoints = []
             self.plot_Ypoints = []
             self.auto_scroll = True
+            self.income_amount_label = pyqtgraph.TextItem("")
+            self.plot_widget.addItem(self.income_amount_label)
         else:
             self.EDIT_BTN = QPushButton("Edit")
             # self.EDIT_BTN.clicked.connect(self.edit_card_info_event)
@@ -79,7 +81,12 @@ class CreditInfoWidget(QWidget):
 
             CreditInfoWidget.reScaling = False
 
-    def add_HARD_deadline(self,time):
+    def add_HARD_deadline(self,time,amount = None):
+        if amount:
+            label = pyqtgraph.TextItem("%.2f" % amount, fill=(0, 0, 0))
+            label.setPos(time, 110)
+            self.plot_widget.addItem(label)
+
         arrow = pyqtgraph.ArrowItem(angle=270, tipAngle=30,
                                   baseAngle=10, headLen=20,
                                   tailLen=100, tailWidth=1,
@@ -87,9 +94,18 @@ class CreditInfoWidget(QWidget):
         arrow.setPos(time, 0)
         self.plot_widget.addItem(arrow)
         self.arrow_list.append(arrow)
+        if amount:
+            label = pyqtgraph.TextItem("%.2f" % amount)
+            label.setPos(time,110)
+            self.plot_widget.addItem(label)
         self.plot_widget.setRange(yRange=(0,100))
 
-    def add_SOFT_deadline(self,time):
+    def add_SOFT_deadline(self,time,amount = None):
+        if amount:
+            label = pyqtgraph.TextItem("%.2f" % amount, fill=(0, 0, 0))
+            label.setPos(time, 110)
+            self.plot_widget.addItem(label)
+
         arrow = pyqtgraph.ArrowItem(angle=270, tipAngle=30,
                                   baseAngle=10, headLen=20,
                                   tailLen=100, tailWidth=1,
@@ -97,9 +113,18 @@ class CreditInfoWidget(QWidget):
         arrow.setPos(time, 0)
         self.plot_widget.addItem(arrow)
         self.arrow_list.append(arrow)
+        if amount:
+            label = pyqtgraph.TextItem("%.2f" % amount)
+            label.setPos(time,110)
+            self.plot_widget.addItem(label)
         self.plot_widget.setRange(yRange=(0,100))
 
-    def add_REL_time(self,time):
+    def add_REL_time(self,time,amount = None):
+        if amount:
+            label = pyqtgraph.TextItem("%.2f" % amount,fill=(0,0,0))
+            label.setPos(time,110)
+            self.plot_widget.addItem(label)
+
         arrow = pyqtgraph.ArrowItem(angle=90, tipAngle=30,
                                   baseAngle=10, headLen=20,
                                   tailLen=100, tailWidth=1,
@@ -132,6 +157,8 @@ class CreditInfoWidget(QWidget):
 
             self.green_line_plot.setData(x=self.plot_Xpoints,
                                   y=self.plot_Ypoints)
+            self.income_amount_label.setText("%.2f" % self.plot_Ypoints[-1])
+            self.income_amount_label.setPos(self.plot_Xpoints[-1],self.plot_Ypoints[-1])
 
 
     def add_point_to_income_plot(self,_x,_y):
