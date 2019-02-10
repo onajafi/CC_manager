@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
+from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel, QScrollArea, QWidget
 
 from pyqtgraph.Qt import QtGui, QtCore
 
@@ -54,6 +54,8 @@ class MAIN_UI(QtGui.QMainWindow):
         self.setAlertLightStat(True)
         self.time_layout.addWidget(self.alertLight)
 
+
+
         self.main_layout.addLayout(self.time_layout)
 
         # self.first_plot = CreditInfoWidget.CreditInfoWidget("HI",True)
@@ -66,7 +68,26 @@ class MAIN_UI(QtGui.QMainWindow):
         # self.second_plot = CreditInfoWidget.CreditInfoWidget("HI again")
         # self.main_layout.addWidget(self.second_plot)
 
-        self.main_layout.addStretch()
+        self.cards_plot_layout = QtGui.QVBoxLayout()
+        self.scroll_par = QWidget()
+        # self.scroll_par.setGeometry(QtCore.QRect(0, 0, 1112, 932))
+        self.scrollingArea = QScrollArea(self.scroll_par)
+        self.main_layout.addWidget(self.scrollingArea)
+        # self.scrollingArea.setLayout(self.cards_plot_layout)
+
+        self.scrollAreaWidgetContents = QWidget()
+        # self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1112, 932))
+        self.scrollingArea.setWidget(self.scrollAreaWidgetContents)
+        self.scrollAreaWidgetContents.setLayout(self.cards_plot_layout)
+
+        # self.scrollingArea.setFixedWidth(250)
+        self.scrollingArea.setWidgetResizable(True)
+
+
+        self.cards_plot_layout.addWidget(QWidget())
+        # self.main_layout.addLayout(self.cards_plot_layout)
+
+        self.cards_plot_layout.addStretch()
 
     def SUB_add_field(self):
         self.INCOME_EDIT_BTN = QPushButton("Edit Income")
@@ -141,7 +162,7 @@ class MAIN_UI(QtGui.QMainWindow):
         tmp_plot._card_OBJ = _card
 
         self.main_schedule.add_event(Event(self.time,"3-release",_card))
-        self.main_layout.insertWidget(2,tmp_plot)
+        self.cards_plot_layout.insertWidget(1,tmp_plot)
         self.card_list.append(tmp_plot)
 
         self.main_schedule.schedule()
@@ -179,11 +200,6 @@ class MAIN_UI(QtGui.QMainWindow):
                     _card_plot.add_REL_time(_bill.release_time,_bill.debt)
                     _card_plot.add_SOFT_deadline(_bill.deadline,_bill.debt)
                     _card_plot.add_HARD_deadline(_bill.hard_deadline,_bill.debt)
-
-
-
-
-
 
 
 
