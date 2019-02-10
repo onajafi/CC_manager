@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
 from pyqtgraph.Qt import QtGui, QtCore
 
 import CreditInfoWidget
-from scheduling import Scheduling
+from scheduling import Scheduling, Event
 import random
 
 
@@ -24,8 +24,9 @@ class MAIN_UI(QtGui.QMainWindow):
         self.main_main_layout.addLayout(self.sub_layout)
 
         self.MainWid.setLayout(self.main_main_layout)
+        self.timer_enable = False
 
-        self.main_schedule = Scheduling(None,None,None)
+        self.main_schedule = None
         self.card_list = []# elem: [card_OBJ, plot_OBJ]
 
         self.MAIN_add_fields()
@@ -36,6 +37,7 @@ class MAIN_UI(QtGui.QMainWindow):
         self.ADD_CARD_BTN.clicked.connect(self.add_card_event)
 
         self.time = 0
+
 
 
     def MAIN_add_fields(self):
@@ -98,6 +100,7 @@ class MAIN_UI(QtGui.QMainWindow):
         self.income_page.show(self.main_schedule.income_period,
                               self.main_schedule.minimum_income,
                               self.main_schedule.maximum_income)
+
         self.close()
 
     def give_money_Event(self):
@@ -107,9 +110,13 @@ class MAIN_UI(QtGui.QMainWindow):
             self.income_plot.income_amount.setText('')
 
     def show(self):
+        self.timer_enable = True
         self.disp_time.setText(str(self.main_schedule.time))
         QtGui.QMainWindow.show(self)
 
+    def close(self):
+        self.timer_enable = False
+        QtGui.QMainWindow.close(self)
 
     def time_forward_Event(self):
         if len(self.main_schedule.events) > 0:
@@ -125,8 +132,17 @@ class MAIN_UI(QtGui.QMainWindow):
         tmp_plot = CreditInfoWidget.CreditInfoWidget(title=_card.name)
         tmp_plot.init_main_page(self)
         tmp_plot._card_OBJ = _card
+
+        self.main_schedule.add_event(Event(self.time,"3-release",_card))
         self.main_layout.insertWidget(2,tmp_plot)
         self.card_list.append(tmp_plot)
+
+        self.main_schedule.schedule()
+        for _bill in _card.bills:
+            tmp_plot.add_REL_time(_bill.release_time)
+            tmp_plot.add_SOFT_deadline(_bill.deadline)
+            tmp_plot.add_HARD_deadline(_bill.hard_deadline)
+
 
     def request_delete(self,plot_widg):
         # TODO Call zavosh's delete function here
@@ -136,11 +152,25 @@ class MAIN_UI(QtGui.QMainWindow):
 
     def time_tigger(self):
         print("timer triggered")
-        if self.income_plot:
+        if self.income_plot and self.main_schedule and self.timer_enable:
+            print("Entered here!!!")
+
             current_income = self.main_schedule.money
             self.income_plot.add_point_to_income_plot(self.time,current_income)
             self.income_plot.redraw_plot()
+
+            # self.main_schedule.
+
             self.time += 1
+            self.main_schedule.update_time(self.time)
+            self.main_schedule.schedule()
+
+            for _card_plot in self.card_list:
+                for _bill in _card_plot._card_OBJ.bills:
+                    _card_plot.add_REL_time(_bill.release_time)
+                    _card_plot.add_SOFT_deadline(_bill.deadline)
+                    _card_plot.add_HARD_deadline(_bill.hard_deadline)
+
 
 
 

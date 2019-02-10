@@ -47,9 +47,9 @@ class CreditInfoWidget(QWidget):
             self.DELETE_BTN = QPushButton("Delete")
             self.DELETE_BTN.clicked.connect(self.delete_plot_event)
             btn_Layout.addWidget(self.DELETE_BTN)
-            self.add_REL_time(2)
-            self.add_SOFT_deadline(5)
-            self.add_HARD_deadline(6)
+            # self.add_REL_time(2)
+            # self.add_SOFT_deadline(5)
+            # self.add_HARD_deadline(6)
 
     def click_on_plot_event(self):
         print("clicked")
@@ -80,31 +80,31 @@ class CreditInfoWidget(QWidget):
             CreditInfoWidget.reScaling = False
 
     def add_HARD_deadline(self,time):
-        arrow = pyqtgraph.ArrowItem(angle=90, tipAngle=30,
+        arrow = pyqtgraph.ArrowItem(angle=270, tipAngle=30,
                                   baseAngle=10, headLen=20,
                                   tailLen=100, tailWidth=1,
                                   pen=None, brush='r')
-        arrow.setPos(time, 100)
+        arrow.setPos(time, 0)
         self.plot_widget.addItem(arrow)
         self.arrow_list.append(arrow)
         self.plot_widget.setRange(yRange=(0,100))
 
     def add_SOFT_deadline(self,time):
-        arrow = pyqtgraph.ArrowItem(angle=90, tipAngle=30,
+        arrow = pyqtgraph.ArrowItem(angle=270, tipAngle=30,
                                   baseAngle=10, headLen=20,
                                   tailLen=100, tailWidth=1,
                                   pen=None, brush='y')
-        arrow.setPos(time, 100)
+        arrow.setPos(time, 0)
         self.plot_widget.addItem(arrow)
         self.arrow_list.append(arrow)
         self.plot_widget.setRange(yRange=(0,100))
 
     def add_REL_time(self,time):
-        arrow = pyqtgraph.ArrowItem(angle=270, tipAngle=30,
+        arrow = pyqtgraph.ArrowItem(angle=90, tipAngle=30,
                                   baseAngle=10, headLen=20,
                                   tailLen=100, tailWidth=1,
                                   pen=None, brush='g')
-        arrow.setPos(time, 0)
+        arrow.setPos(time, 100)
         self.plot_widget.addItem(arrow)
         self.arrow_list.append(arrow)
         self.plot_widget.setRange(yRange=(0,100))

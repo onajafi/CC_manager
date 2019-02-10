@@ -50,14 +50,20 @@ class INCOME_PAGE_UI(QtGui.QMainWindow):
            self.ThirdTXTBox.text() == ''):
             return
 
-        self.close()
-        self.main_page.show()
         # Making the Schedule OBJ
 
-        self.main_page.main_schedule.income_period = int(self.FirstTXTBox.text())
-        self.main_page.main_schedule.minimum_income = int(self.SecondTXTBox.text())
-        self.main_page.main_schedule.maximum_income = int(self.ThirdTXTBox.text())
+        if self.main_page.main_schedule:
+            self.main_page.main_schedule.income_period = float(self.FirstTXTBox.text())
+            self.main_page.main_schedule.minimum_income = float(self.SecondTXTBox.text())
+            self.main_page.main_schedule.maximum_income = float(self.ThirdTXTBox.text())
+        else:
+            self.main_page.main_schedule = Scheduling(float(self.FirstTXTBox.text()),
+                                                      float(self.SecondTXTBox.text()),
+                                                      float(self.ThirdTXTBox.text()))
+        self.main_page.main_schedule.schedule()
 
+        self.close()
+        self.main_page.show()
 
     def initPages(self,MainPage):
         self.main_page = MainPage
