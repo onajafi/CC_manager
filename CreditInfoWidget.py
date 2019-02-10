@@ -30,7 +30,7 @@ class CreditInfoWidget(QWidget):
         self.arrow_list = []
         self.is_income = isIncome
         if isIncome:
-            self.draw_income(range(0,10))
+            self.draw_income([0]*10)
             self.GIVE_MONEY_BTN = QPushButton("Give Money")
             self.income_amount = QLineEdit('')
             btn_Layout.addWidget(self.GIVE_MONEY_BTN)

@@ -33,7 +33,7 @@ class MAIN_UI(QtGui.QMainWindow):
         self.SUB_add_field()
 
         self.INCOME_EDIT_BTN.clicked.connect(self.EDIT_INCOME_BTN_Event)
-        self.timeFWD.clicked.connect(self.time_forward_Event)
+        self.time_pause.clicked.connect(self.time_pause_BTN_event)
         self.ADD_CARD_BTN.clicked.connect(self.add_card_event)
 
         self.time = 0
@@ -48,8 +48,8 @@ class MAIN_UI(QtGui.QMainWindow):
         self.disp_time.setFixedWidth(50)
         self.time_layout.addWidget(self.disp_time)
         self.time_layout.addStretch()
-        self.timeFWD = QPushButton("Time Go Forward")
-        self.time_layout.addWidget(self.timeFWD)
+        self.time_pause = QPushButton("Pause Time")
+        self.time_layout.addWidget(self.time_pause)
         self.alertLight = QLabel("Alert Light")
         self.setAlertLightStat(True)
         self.time_layout.addWidget(self.alertLight)
@@ -117,12 +117,19 @@ class MAIN_UI(QtGui.QMainWindow):
     def close(self):
         self.timer_enable = False
         QtGui.QMainWindow.close(self)
+    #
+    # def time_forward_Event(self):
+    #     if len(self.main_schedule.events) > 0:
+    #         self.main_schedule.update_time(self.main_schedule.events[0].time)
+    #         self.main_schedule.schedule()
+    #         self.disp_time.setText(str(self.main_schedule.time))
 
-    def time_forward_Event(self):
-        if len(self.main_schedule.events) > 0:
-            self.main_schedule.update_time(self.main_schedule.events[0].time)
-            self.main_schedule.schedule()
-            self.disp_time.setText(str(self.main_schedule.time))
+    def time_pause_BTN_event(self):
+        self.timer_enable = not self.timer_enable
+        if(self.timer_enable):
+            self.time_pause.setText("Pause Time")
+        else:
+            self.time_pause.setText("Play Time")
 
     def add_card_event(self):
         self.close()
@@ -161,6 +168,7 @@ class MAIN_UI(QtGui.QMainWindow):
             # self.main_schedule.
 
             self.time += 1
+            self.disp_time.setText(str(self.time))
             self.main_schedule.update_time(self.time)
 
             self.main_schedule.schedule()
