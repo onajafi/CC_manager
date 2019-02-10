@@ -68,7 +68,7 @@ class Scheduling:
 					assert(remained_debt == 0)
 					self.money -= amount_payed
 					assert(self.money >= 0)
-				self.event.bill.pass_hard_deadline()
+				event.bill.pass_hard_deadline()
 			elif "release" in event.event_type:
 				self.add_event(Event(self.time + event.bill.bill_period, "3-release", event.bill))
 				if event.bill.maximum_credit >= event.bill.minimum_paying_first + event.bill.get_total_debt():
