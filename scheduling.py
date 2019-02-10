@@ -15,10 +15,10 @@ class Scheduling:
 		self.income_period = income_period
 		self.minimum_income = minimum_income
 		self.maximum_income = maximum_income
-		self.events = []
 		self.time = 0
 		self.money = 0
 		self.alert = False
+		self.events = [Event(self.time, "0-income", None)]
 
 	def update_time(self, new_time):
 		self.time = new_time
