@@ -37,6 +37,7 @@ class MAIN_UI(QtGui.QMainWindow):
         self.ADD_CARD_BTN.clicked.connect(self.add_card_event)
 
         self.time = 0
+        self.green_income_time = 0
 
 
 
@@ -184,6 +185,9 @@ class MAIN_UI(QtGui.QMainWindow):
 
             current_income = self.main_schedule.money
             self.income_plot.add_point_to_income_plot(self.time,current_income)
+            if(self.main_schedule.time_of_next_income() > self.green_income_time):
+                self.green_income_time = self.main_schedule.time_of_next_income()
+                self.income_plot.add_REL_time(self.green_income_time)
             self.income_plot.redraw_plot()
 
             # self.main_schedule.
