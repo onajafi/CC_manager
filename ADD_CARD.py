@@ -80,9 +80,6 @@ class ADD_CARD_UI(QtGui.QMainWindow):
             float(self.HARD_D_TXTBox.text())
         )
 
-        # if self.editing_card: # EDIT
-        #     self.main_page.edit_card(self.editing_card)
-        # else: # ADD
         self.main_page.add_new_card(tmp_card)
 
         self.main_page.show()

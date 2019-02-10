@@ -4,6 +4,7 @@ from pyqtgraph.Qt import QtGui, QtCore
 
 import CreditInfoWidget
 from scheduling import Scheduling
+import random
 
 
 class MAIN_UI(QtGui.QMainWindow):
@@ -34,6 +35,8 @@ class MAIN_UI(QtGui.QMainWindow):
         self.timeFWD.clicked.connect(self.time_forward_Event)
         self.ADD_CARD_BTN.clicked.connect(self.add_card_event)
 
+        self.time = 0
+
 
     def MAIN_add_fields(self):
         self.time_layout = QtGui.QHBoxLayout()
@@ -54,7 +57,7 @@ class MAIN_UI(QtGui.QMainWindow):
         # self.first_plot = CreditInfoWidget.CreditInfoWidget("HI",True)
         # self.main_layout.addWidget(self.first_plot)
 
-        self.income_plot = CreditInfoWidget.CreditInfoWidget("Income", True)
+        self.income_plot = CreditInfoWidget.CreditInfoWidget("income", True)
         self.main_layout.addWidget(self.income_plot)
         self.income_plot.GIVE_MONEY_BTN.clicked.connect(self.give_money_Event)
 
@@ -100,7 +103,7 @@ class MAIN_UI(QtGui.QMainWindow):
     def give_money_Event(self):
         if(self.income_plot.income_amount.text()):
             self.main_schedule.get_money_from_a_friend(
-                int(self.income_plot.income_amount.text()))
+                float(self.income_plot.income_amount.text()))
             self.income_plot.income_amount.setText('')
 
     def show(self):
@@ -125,24 +128,19 @@ class MAIN_UI(QtGui.QMainWindow):
         self.main_layout.insertWidget(2,tmp_plot)
         self.card_list.append(tmp_plot)
 
-    # def edit_card(self,_card):
-    #     for idx,elem in enumerate(self.card_list):
-    #         if elem[1] is _card:
-    #             self.card_list[idx][0].
-
-    # def request_card_edit(self,card_plot_widget):# Show the ADD_CARD page
-    #     for elem in self.card_list:
-    #         if elem[0] is card_plot_widget:
-    #             self.add_credit_page.show(edit_card = elem[1])
-    #             self.close()
-
     def request_delete(self,plot_widg):
         # TODO Call zavosh's delete function here
+        self.main_schedule.delete_card(plot_widg._card_OBJ)
         plot_widg.hide()
         self.card_list.remove(plot_widg)
 
-
-
+    def time_tigger(self):
+        print("timer triggered")
+        if self.income_plot:
+            current_income = self.main_schedule.money
+            self.income_plot.add_point_to_income_plot(self.time,current_income)
+            self.income_plot.redraw_plot()
+            self.time += 1
 
 
 

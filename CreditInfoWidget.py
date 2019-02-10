@@ -15,6 +15,7 @@ class CreditInfoWidget(QWidget):
 
         self.setFixedHeight(150)
         self.plot_widget = pyqtgraph.PlotWidget(title = title)
+        # self.plot_widget.mousePressEvent.connect(self.click_on_plot_event)
         # self.plot_widget.setFixedWidth(400)
 
         self.hLayout = QHBoxLayout()
@@ -27,6 +28,7 @@ class CreditInfoWidget(QWidget):
         self.plot_widget.sigRangeChanged.connect(self.axis_changed)
 
         self.arrow_list = []
+        self.is_income = isIncome
         if isIncome:
             self.draw_income(range(0,10))
             self.GIVE_MONEY_BTN = QPushButton("Give Money")
@@ -34,6 +36,10 @@ class CreditInfoWidget(QWidget):
             btn_Layout.addWidget(self.GIVE_MONEY_BTN)
             btn_Layout.addWidget(self.income_amount)
             btn_Layout.addStretch()
+
+            self.plot_Xpoints = []
+            self.plot_Ypoints = []
+            self.auto_scroll = True
         else:
             self.EDIT_BTN = QPushButton("Edit")
             # self.EDIT_BTN.clicked.connect(self.edit_card_info_event)
@@ -45,7 +51,8 @@ class CreditInfoWidget(QWidget):
             self.add_SOFT_deadline(5)
             self.add_HARD_deadline(6)
 
-
+    def click_on_plot_event(self):
+        print("clicked")
 
     def eventFilter(self, object, event):
         print("AnEVENT")
@@ -103,13 +110,33 @@ class CreditInfoWidget(QWidget):
         self.plot_widget.setRange(yRange=(0,100))
 
     def draw_income(self,list):
-        self.plot_widget.plot(list, fillLevel=-0.3, brush=(50,200,50,100),pen=(100,255,100,200))
+        self.green_line_plot = self.plot_widget.plot(list, fillLevel=-0.3, brush=(50,200,50,100),pen=(100,255,100,200))
 
     def init_main_page(self,_main_page):
         self.main_page = _main_page
 
     def delete_plot_event(self):
         self.main_page.request_delete(self)
+        CreditInfoWidgetOBJ_LIST.remove(self)
 
-    # def edit_card_info_event(self):
-    #     self.main_page.request_card_edit(self)
+    def redraw_plot(self):
+        if(self.is_income):
+            if self.auto_scroll:
+                if(len(self.plot_Ypoints) >= 10):
+                    new_range = range(self.plot_Xpoints[-1] - 4,self.plot_Xpoints[-1] + 6)
+                    self.plot_widget.setRange(xRange=new_range)
+                    # self.auto_scroll = False
+                else:
+                    new_range = range(1,10)
+                    self.plot_widget.setRange(xRange=new_range)
+
+            self.green_line_plot.setData(x=self.plot_Xpoints,
+                                  y=self.plot_Ypoints)
+
+
+    def add_point_to_income_plot(self,_x,_y):
+        if(len(self.plot_Ypoints) > 0):
+            self.plot_Xpoints.append(_x)
+            self.plot_Ypoints.append(self.plot_Ypoints[-1])
+        self.plot_Xpoints.append(_x)
+        self.plot_Ypoints.append(_y)
