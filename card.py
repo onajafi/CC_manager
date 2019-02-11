@@ -43,7 +43,7 @@ class Bill:
 
 	def pass_hard_deadline(self):
 		if self.debt != 0:
-			raise Exception("deadline miss error!")
+			raise Exception("hard deadline miss error!")
 		self.card.bills.remove(self)
 		
 	def pass_deadline(self):

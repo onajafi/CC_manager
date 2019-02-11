@@ -60,15 +60,18 @@ class Scheduling:
 				if event.time > self.time:
 					self.events.append(event)
 					self.events.sort(key=lambda x : (x.time, x.event_type))
-					return self.events[0].time
-				continue
+					return None
+				raise Exception("an event passed!")
 			if "hard" in event.event_type:
 				if event.bill.debt <= self.money:
 					amount_payed, remained_debt = event.bill.pay_debt(self.money)
 					assert(remained_debt == 0)
 					self.money -= amount_payed
 					assert(self.money >= 0)
-				event.bill.pass_hard_deadline()
+				try:
+					event.bill.pass_hard_deadline()
+				except Exception as e:
+					return str(e)
 			elif "release" in event.event_type:
 				self.add_event(Event(self.time + event.bill.bill_period, "3-release", event.bill))
 				if event.bill.maximum_credit >= event.bill.minimum_paying_first + event.bill.get_total_debt():
@@ -124,6 +127,9 @@ class Scheduling:
 									if temp_money < 0:
 										self.alert = True
 										break
-				event.bill.pass_deadline()
+				try:
+					event.bill.pass_deadline()
+				except Exception as e:
+					return str(e)
 			else:
 				assert(False)
