@@ -1,3 +1,5 @@
+from PyQt5 import QtWidgets
+
 from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel, QScrollArea, QWidget
 
 from pyqtgraph.Qt import QtGui, QtCore
@@ -38,6 +40,8 @@ class MAIN_UI(QtGui.QMainWindow):
 
         self.time = 0
         self.green_income_time = 0
+
+        self.ERROR = False
 
 
 
@@ -166,7 +170,19 @@ class MAIN_UI(QtGui.QMainWindow):
         self.cards_plot_layout.insertWidget(1,tmp_plot)
         self.card_list.append(tmp_plot)
 
-        self.main_schedule.schedule()
+        message = self.main_schedule.schedule()
+        if (message):
+            self.error_dialog = QtWidgets.QMessageBox()
+            self.error_dialog.setIcon(QtWidgets.QMessageBox.Critical)
+            self.error_dialog.setText("Error")
+            self.error_dialog.setInformativeText(message)
+            self.error_dialog.setWindowTitle("Error")
+            self.error_dialog.show()
+
+            self.ERROR = True
+            # self.close()
+            return
+
         for _bill in _card.bills:
             tmp_plot.add_REL_time(_bill.release_time,_bill.debt)
             tmp_plot.add_SOFT_deadline(_bill.deadline,_bill.debt)
@@ -180,7 +196,8 @@ class MAIN_UI(QtGui.QMainWindow):
 
     def time_tigger(self):
         print("timer triggered")
-        if self.income_plot and self.main_schedule and self.timer_enable:
+        if self.income_plot and self.main_schedule and self.timer_enable and \
+                not self.ERROR:
             print("Entered here!!!")
 
             current_income = self.main_schedule.money
@@ -196,7 +213,20 @@ class MAIN_UI(QtGui.QMainWindow):
             self.disp_time.setText(str(self.time))
             self.main_schedule.update_time(self.time)
 
-            self.main_schedule.schedule()
+            message = self.main_schedule.schedule()
+            if (message):
+                self.error_dialog = QtWidgets.QMessageBox()
+                self.error_dialog.setIcon(QtWidgets.QMessageBox.Critical)
+                self.error_dialog.setText("Error")
+                self.error_dialog.setInformativeText(message)
+                self.error_dialog.setWindowTitle("Error")
+                self.error_dialog.show()
+
+                self.ERROR = True
+                # self.close()
+                return
+
+
             self.setAlertLightStat(not self.main_schedule.alert)
 
             for _card_plot in self.card_list:

@@ -1,3 +1,5 @@
+from PyQt5 import QtWidgets
+
 from PyQt5.QtWidgets import QPushButton, QScrollArea, QLineEdit, QLabel
 
 from pyqtgraph.Qt import QtGui, QtCore
@@ -60,7 +62,23 @@ class INCOME_PAGE_UI(QtGui.QMainWindow):
             self.main_page.main_schedule = Scheduling(float(self.FirstTXTBox.text()),
                                                       float(self.SecondTXTBox.text()),
                                                       float(self.ThirdTXTBox.text()))
-        self.main_page.main_schedule.schedule()
+
+
+        message = self.main_page.main_schedule.schedule()
+
+        if(message):
+            self.error_dialog = QtWidgets.QMessageBox()
+            self.error_dialog.setIcon(QtWidgets.QMessageBox.Critical)
+            self.error_dialog.setText("Error")
+            self.error_dialog.setInformativeText(message)
+            self.error_dialog.setWindowTitle("Error")
+            self.error_dialog.show()
+
+            self.main_page.ERROR = True
+            # self.close()
+            return
+
+
 
         self.close()
         self.main_page.show()

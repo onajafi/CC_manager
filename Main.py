@@ -4,6 +4,7 @@
 import INCOME_PAGE_UI,MAIN_UI,ADD_CARD
 from pyqtgraph.Qt import QtGui, QtCore
 
+from PyQt5 import QtWidgets
 
 
 app = QtGui.QApplication([])
@@ -27,6 +28,7 @@ def tick_event():
 
 time_trigger = QtCore.QTimer()
 time_trigger.timeout.connect(tick_event)
+
 
 
 
