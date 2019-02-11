@@ -56,6 +56,7 @@ class Scheduling:
 		while len(self.events) > 0:
 			self.events.sort(key=lambda x : (x.time, x.event_type))
 			event = self.events.pop(0)
+			print("time: ", self.time, " - event time: ", event.time, " - event type: ", event.event_type)
 			if event.time != self.time:
 				if event.time > self.time:
 					self.events.append(event)

@@ -195,10 +195,9 @@ class MAIN_UI(QtGui.QMainWindow):
         self.card_list.remove(plot_widg)
 
     def time_tigger(self):
-        print("timer triggered")
         if self.income_plot and self.main_schedule and self.timer_enable and \
                 not self.ERROR:
-            print("Entered here!!!")
+            print("timer triggered")
 
             current_income = self.main_schedule.money
             self.income_plot.add_point_to_income_plot(self.time,current_income)
