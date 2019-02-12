@@ -137,6 +137,7 @@ class CreditInfoWidget(QWidget):
     def draw_income(self,list):
         self.green_line_plot = self.plot_widget.plot(list, fillLevel=-0.3, brush=(50,200,50,100),pen=(100,255,100,200))
 
+
     def init_main_page(self,_main_page):
         self.main_page = _main_page
 
@@ -159,6 +160,7 @@ class CreditInfoWidget(QWidget):
                                   y=self.plot_Ypoints)
             self.income_amount_label.setText("%.2f" % self.plot_Ypoints[-1])
             self.income_amount_label.setPos(self.plot_Xpoints[-1],self.plot_Ypoints[-1])
+            self.plot_widget.setRange(yRange=range(0,int(max(self.plot_Ypoints)+1)))
 
 
     def add_point_to_income_plot(self,_x,_y):
